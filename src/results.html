@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="js/lib/qrcode.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/loadResults.js"></script>
+    <script src="js/generateQrCode.js"></script>
+    <script src="js/login.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+          integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+            integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+            crossorigin="anonymous"></script>
+    <style>
+        nav {
+            margin-bottom: 100px;
+        }
+
+        #qrcode {
+            margin-top: 80px;
+            position: fixed;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+    <div class="container">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <span class="navbar-text">Текущий пользователь: <span id="login"></span></span>
+                </li>
+            </ul>
+            <span class="navbar-text">
+                <button type="button" class="btn btn-link" id="logoutButton">Выйти</button>
+            </span>
+        </div>
+    </div>
+</nav>
+<div class="container">
+
+
+    <div class="row">
+
+        <div class="col-sm">
+            <div id="results">
+
+            </div>
+        </div>
+        <div class="col-sm">
+            <button type="button" class="btn btn-secondary" id="generateCodeButton">Сгенерировать QR-код</button>
+            <div id="qrcode"></div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
