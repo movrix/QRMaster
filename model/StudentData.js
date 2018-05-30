@@ -1,15 +1,16 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var ResultSchema = new Schema({
+var StudentDataSchema = new Schema({
     studentId: String,
+    groupId: String,
     title: String,
     passDate: Date,
     results: [],
     mark: String
 });
 
-var Result = mongoose.model('result', ResultSchema);
+var StudentData = mongoose.model('StudentData', StudentDataSchema);
 
-module.exports = Result;
+module.exports = StudentData;
 

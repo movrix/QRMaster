@@ -1,5 +1,5 @@
 properties = {
     serverAddress: 'http://localhost:8080',
-    results: '/api/result',
+    userdata: '/api/userdata',
     username: '/api/username'
 };

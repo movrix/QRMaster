@@ -12,7 +12,7 @@ $(document).ready(function () {
 
 
     $.ajax({
-        url: properties.serverAddress + properties.results,
+        url: properties.serverAddress + properties.userdata,
         type: "GET",
         contentType: "application/json",
         async: false,

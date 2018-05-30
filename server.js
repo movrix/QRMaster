@@ -9,9 +9,12 @@ var cors = require('cors');
 var path = require('path');
 var url = require('url');
 var session = require('express-session');  // Создание сессии пользователя
-var Result = require('./model/Result');
+var StudentData = require('./model/StudentData');
+var TeacherData = require('./model/TeacherData');
 var User = require('./model/User');
 var cookieParser = require('cookie-parser');  // Чтенение кук
+
+var authorization = require('./src/internal/cheackAuthorization');
 
 var router = express.Router();
 
@@ -84,7 +87,7 @@ app.get('/login', function (req, res) {
 app.get('/', function (req, res) {
     User.find({'_id': req.session.userId, 'teacher': false}, function (err, results) {
         if (results.length === 1) {
-            res.sendFile(path.join(__dirname + '/src/results.html'));
+            res.sendFile(path.join(__dirname + '/src/userData.html'));
         } else {
             res.redirect('/login');
         }
@@ -153,46 +156,53 @@ app.get('/api/logout', function(req, res, next) {
 });
 
 
-
-
-
 // Запрос данных в формате json
-app.get('/api/result', function (req, res) {
+app.get('/api/userdata', function (req, res) {
 
-    //Проверяем сессию - студент или преподаватель
-    User.find({'_id': req.session.userId, 'teacher': true}, function (err, results) {
-
-
-        // Если преподаватель, то берем тесты из qr кода
-        if (results.length === 1) {
-
-            Result.find({_id: {$in: req.cookies.tests}}, function (err, results) {
-                if (err)
-                    res.send(err);
-                res.json(results);
-            });
-
-            // Если студент, то берем все тесты студента БЕЗ ВОПРОСОВ И ОТВЕТОВ
-        } else {
-            Result.find({'studentId': req.session.userId}, function (err, results) {
-                if (err)
-                    res.send(err);
-                res.json(results);
-            }).select('-results');
-        }
-    });
-
-
+    if(authorization.isStudent()) {
+        StudentData.find({'studentId': req.session.userId}, function (err, results) {
+            if (err)
+                res.send(err);
+            res.json(results);
+        }).select('-results');
+    } else if (authorization.isTeacher()) {
+        TeacherData.find({'teacherId': req.session.userId}, function (err, results) {
+            if (err)
+                res.send(err);
+            res.json(results);
+        });
+    } 
 });
 
 
 
-app.get('/share_t', function (req, res) {
 
-    // Парсим id тестов из qr кода
-    var url_parts = url.parse(req.url, true);
-    var query = url_parts.query;
-    var shareTests = query.id;
+app.get('/share/:id', function (req, res) {
+
+    var shareDataId = req.params.id;
+
+    ShareData.find({'_id': shareDataId}, function(err, results) {
+
+        if (results.length !== 1) {
+            // записи нет, вернуть ошибку
+        }
+        
+        if (results[0]._doc.toUserType == "student" && authorization.isStudent(req) ) {
+            if (results[0]._doc.toGroup === USERGROUP || results[0]._doc.toUser === authorization.getUserName()) {
+                res.json(results);
+            }
+        }
+
+        if (results[0]._doc.toUserType == "teacher" && authorization.isTeacher(req) ) {
+                res.json(results);
+        }
+
+        if (results[0]._doc.toUserType == "all") {
+            res.json(results);
+        }
+        
+    });
+    
 
     // Проверяем пользователя, пытающегося перейти по ссылке в QR коде
     User.find({'username': req.session.userId, 'isTeacher': true}, function (err, results) {
@@ -203,35 +213,13 @@ app.get('/share_t', function (req, res) {
             res.send();
 
         } else {
-            res.cookie('tests', shareTests, {maxAge: 900000, httpOnly: true});
+            
             return res.redirect('/share_page')
         }
 
     });
 });
 
-app.get('/share_s', function (req, res) {
-
-    // Парсим id тестов из qr кода
-    var url_parts = url.parse(req.url, true);
-    var query = url_parts.query;
-    var shareTests = query.id;
-
-    // Проверяем пользователя, пытающегося перейти по ссылке в QR коде
-    User.find({'username': req.session.userId, 'isTeacher': false}, function (err, results) {
-
-        // Если это студент или не залогиненый человек, создаем куку с id тестов и перенаправляем на страницу логина
-        if (results.length === 1) {
-            res.status(403);
-            res.send();
-
-        } else {
-            res.cookie('tests', shareTests, {maxAge: 900000, httpOnly: true});
-            return res.redirect('/share_page')
-        }
-
-    });
-});
 
 app.get('/api/share', function (req, res) {
 
@@ -261,11 +249,7 @@ app.get('/api/share', function (req, res) {
 
 });
 
-
-
-
 app.use('/api', router);
-
 
 app.listen(port);
 console.log('Magic happens on port ' + port);
