@@ -3,12 +3,11 @@ var Schema = mongoose.Schema;
 
 var StudentDataSchema = new Schema({
     studentId: String,
-    groupId: String,
     title: String,
     passDate: Date,
     results: [],
     mark: String
-});
+}, { collection: 'studentData'} );
 
 var StudentData = mongoose.model('StudentData', StudentDataSchema);
 

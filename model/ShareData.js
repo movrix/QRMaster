@@ -3,12 +3,12 @@ var Schema = mongoose.Schema;
 
 var ShareDataSchema = new Schema({
     availableTo: {
-        toUserType: boolean,  // true - to student, false - to teacher
+        toUserType: String,  // all, student, teacher
         toGroup: String,
         toUser: String
     },
     dataIds: []
-});
+}, { collection: 'shareData'});
 
 var ShareData = mongoose.model('ShareData', ShareDataSchema);
 

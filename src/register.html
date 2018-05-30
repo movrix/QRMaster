@@ -38,6 +38,10 @@
             <label for="surname">Фамилия</label>
             <input type="text" class="form-control" id="surname" name="surname" required="required">
         </div>
+        <div class="form-group">
+            <label for="grp">Группа</label>
+            <input type="text" class="form-control" id="grp" name="grp">
+        </div>
 
         <div class="form-group">
             <label for="exampleFormControlSelect1">Статус</label>
@@ -57,7 +61,6 @@
 
         $('#regButton').click(function () {
 
-            //lert("test");
             var form = $("#form");
             var data = form.serializeArray();
             $.ajax({
@@ -70,7 +73,7 @@
                 statusCode: {
                     201: function (response) {
                         $("#nickEror").hide();
-                        window.location = '/loginPage';
+                        window.location = '/login';
                     },
                     400: function (response) {
                         $("#nickEror").show();

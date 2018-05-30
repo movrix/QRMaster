@@ -15,8 +15,9 @@ var UserSchema = new Schema({
     },
     name: String,
     surname: String,
-    teacher: Boolean
-});
+    teacher: Boolean,
+    group: String,
+}, { collection: 'users' });
 
 UserSchema.pre('save', function (next) {
     var user = this;
