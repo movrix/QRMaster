@@ -29,7 +29,7 @@ $(document).ready(function () {
 
                         resultsHTML += '<div class="alert alert-primary" role="alert">' +
                             data[i].results[j].question +
-                            '</div><p><b>Правильный ответ:</b>' + data[i].results[j].trueAnswer +
+                            '</div><p><b>Правильный ответ:</b>' + data[i].results[j].correctAnswer +
                             '<br> <b>Ответ студента:</b> ' + data[i].results[j].userAnswer + '</p>';
                     }
                 }
@@ -39,7 +39,7 @@ $(document).ready(function () {
 
                 var cardHTML = '<div class="row"><div class="card ' + cardClass + ' mb-3" id="' + data[i]._id + '" style="max-width: 30rem;">' +
                     '<div class="card-header"><b>' + data[i].title + '</b><br>Дата попытки: ' + data[i].passDate + '<br> Результат: ' + data[i].mark + ' из 100</div>' +
-                    '<div class="card-body text-dark">' + results +
+                    '<div class="card-body text-dark">' + resultsHTML +
                     '</div></div><div class="col-sm"></div></div>';
 
                 $('#results').append(cardHTML);

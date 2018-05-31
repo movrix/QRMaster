@@ -39,7 +39,7 @@ $(document).ready(function () {
 
                 var cardHTML = '<div class="row"><div class="card ' + cardClass + ' mb-3" id="' + data[i]._id + '" style="max-width: 30rem;">' +
                     '<div class="card-header"><b>' + data[i].title + '</b><br>Дата попытки: ' + data[i].passDate + '<br> Результат: ' + data[i].mark + ' из 100</div>' +
-                    '<div class="card-body text-dark">' + results +
+                    '<div class="card-body text-dark">' +
                     '</div></div><div class="col-sm"><input type="checkbox" value="' + data[i]._id + '"></div></div>';
 
                 $('#results').append(cardHTML);

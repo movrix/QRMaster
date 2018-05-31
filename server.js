@@ -93,7 +93,13 @@ app.get('/registration', function (req, res) {
 });
 
 app.get('/share_page_t', function (req, res) {
-    res.sendFile(path.join(__dirname + '/src/share_page_t.html'));
+    User.find({'_id': req.session.userId, 'teacher': true}, function (err, results) {
+        if (results.length === 0) {
+            res.redirect('/accessAlert');
+        } else {
+            res.sendFile(path.join(__dirname + '/src/share_page_t.html'));
+        }
+    });
 });
 
 app.get('/share_page', function (req, res) {
