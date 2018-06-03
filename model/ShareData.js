@@ -7,7 +7,8 @@ var ShareDataSchema = new Schema({
         toGroup: String,
         toUser: String
     },
-    dataIds: []
+    data: [],
+    dataIds: String
 }, { collection: 'shareData'});
 
 var ShareData = mongoose.model('ShareData', ShareDataSchema);

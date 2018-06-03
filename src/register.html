@@ -19,7 +19,7 @@
 <div class="container col-4 mt-5">
     <form id="form">
         <div class="alert alert-danger" role="alert" id="nickEror" style="display: none;">
-            Выбранный логин уже занят!
+            Ошибка регистрации
         </div>
         <div class="form-group">
             <label for="exampleInputText">Логин</label>
@@ -38,18 +38,24 @@
             <label for="surname">Фамилия</label>
             <input type="text" class="form-control" id="surname" name="surname" required="required">
         </div>
-        <div class="form-group">
+        <div class="form-group" id="gp">
             <label for="grp">Группа</label>
             <input type="text" class="form-control" id="grp" name="grp">
         </div>
 
-        <div class="form-group">
+        <div class="form-group" >
             <label for="exampleFormControlSelect1">Статус</label>
             <select class="form-control" id="exampleFormControlSelect1" name="isTeacher">
                 <option>Студент</option>
                 <option>Преподаватель</option>
             </select>
         </div>
+
+        <div class="form-group" id="inv">
+            <label for="ivitation">Инвайт код</label>
+            <input type="text" class="form-control" id="ivitation" name="ivitation">
+        </div>
+
         <br>
         <button type="button" class="btn btn-secondary" id="regButton">Регистрация</button>
 
@@ -58,6 +64,18 @@
 
 <script>
     $(document).ready(function () {
+
+        $('#inv').hide();
+
+        $('select').on('change', function() {
+           if (this.value === "Преподаватель") {
+               $('#inv').show();
+               $('#gp').hide();
+           } else {
+               $('#inv').hide();
+               $('#gp').show();
+           }
+        });
 
         $('#regButton').click(function () {
 

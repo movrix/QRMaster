@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Данные</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="js/lib/qrcode.js"></script>
     <script src="js/config.js"></script>
-    <script src="js/loadTeacherData.js"></script>
+    <script src="js/loadCurses.js"></script>
     <script src="js/generateQrCode.js"></script>
     <script src="js/login.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
@@ -53,23 +53,14 @@
     <div class="row">
 
         <div class="col-sm">
+            <h4>Список курсов:</h4>
+            <br>
             <div id="results">
 
             </div>
         </div>
         <div class="col-sm">
-            <form>
-            <div class="form-group">
-                <label for="forGroup">Только для группы:</label>
-                <input type="text" class="form-control" id="forGroup" name="forGroup">
-            </div>
-            <div class="form-group">
-                <label for="forUser">Только для пользователя:</label>
-                <input type="text" class="form-control" id="forUser" name="forUser">
-            </div>
-            <button type="button" class="btn btn-secondary" id="generateCodeButtonTeacher">Сгенерировать QR-код</button>
-            </form>
-            <div id="qrcode"></div>
+
         </div>
     </div>
 </div>

@@ -5,10 +5,13 @@ $(document).ready(function () {
         url: properties.serverAddress + "/shareS",
         type: "GET",
         contentType: "application/json",
-        async: false,
+        async: true,
+        headers: {
+            'Content-Type':'application/x-www-form-urlencoded'
+        },
         success: function (data) {
 
-            if (data.length === 0) {
+            /*if (data.length === 0) {
 
                 $('#generateCodeButton').hide();
 
@@ -30,6 +33,11 @@ $(document).ready(function () {
                     '</div></div><div class="col-sm"></div></div>';
 
                 $('#results').append(cardHTML);
+            }*/
+        },
+        statusCode: {
+            301: function (data) {
+                window.location = data;
             }
         }
     });

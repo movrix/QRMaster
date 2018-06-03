@@ -55,7 +55,7 @@ $(document).ready(function() {
 
         list = [];
 
-        $("input:checkbox:checked").each(function(){
+        $("input:radio:checked").each(function(){
             list.push($(this).val());
         });
 

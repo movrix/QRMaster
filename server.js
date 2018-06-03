@@ -11,6 +11,7 @@ var url = require('url');
 var session = require('express-session');  // Создание сессии пользователя
 var StudentData = require('./model/StudentData');
 var ShareData = require('./model/ShareData');
+var InvitationData = require('./model/InvitationData');
 var TeacherData = require('./model/TeacherData');
 var User = require('./model/User');
 var cookieParser = require('cookie-parser');  // Чтенение кук
@@ -66,6 +67,10 @@ app.get('/js/loadTeacherData.js', function (req, res) {
     res.sendFile(path.join(__dirname + '/src/js/actions/loadTeacherData.js'));
 });
 
+app.get('/js/loadCurses.js', function (req, res) {
+    res.sendFile(path.join(__dirname + '/src/js/actions/loadCurses.js'));
+});
+
 app.get('/js/generateQrCode.js', function (req, res) {
     res.sendFile(path.join(__dirname + '/src/js/actions/generateQrCode.js'));
 });
@@ -96,6 +101,10 @@ app.get('/accessAlert', function (req, res) {
 
 app.get('/registration', function (req, res) {
     res.sendFile(path.join(__dirname + '/src/register.html'));
+});
+
+app.get('/course', function (req, res) {
+    res.sendFile(path.join(__dirname + '/src/course.html'));
 });
 
 app.get('/share_page_t', function (req, res) {
@@ -138,8 +147,15 @@ app.post('/register', function (req, res) {
         req.body.password &&
         req.body.name &&
         req.body.surname &&
-        req.body.isTeacher) {
+        req.body.isTeacher &&
+        req.body.ivitation) {
 
+        InvitationData.find({'code': req.body.ivitation}, function (err, results) {
+            if (results.length !== 1) {
+                res.status(400);
+                res.send('Пользователь не создан');
+            }
+        });
         var userData = {
             username: req.body.username,
             password: req.body.password,
@@ -150,9 +166,10 @@ app.post('/register', function (req, res) {
         };
         User.create(userData, function (err, user) {
             if (err) {
-                res.status(400);
                 res.send('Пользователь не создан');
+                res.status(400);
             } else {
+                InvitationData.find({ code:req.body.ivitation }).remove().exec();
                 res.status(201);
                 res.send();
             }
@@ -239,23 +256,21 @@ app.get('/api/userdata', function (req, res) {
 
 
 app.get('/shareT', function (req, res) {
-
     var ids = req.cookies.qrData;
 
     StudentData.find({_id: {$in: ids}}, function (err, results) {
         res.json(results);
     });
-
 });
 
 app.get('/shareS', function (req, res) {
+    /*var data = req.cookies.qrData;
 
-    var ids = req.cookies.qrData;
+    res.status(301);
+    res.redirect(data);*/
 
-    TeacherData.find({_id: {$in: ids}}, function (err, results) {
-        res.json(results);
-    });
-
+    //TeacherData.find({_id: {$in: ids}}, function (err, results) {
+    //});
 });
 
 app.get('/share/:id', function (req, res) {
@@ -277,8 +292,8 @@ app.get('/share/:id', function (req, res) {
                     if (results[0].availableTo.toGroup === user[0].group ||
                         results[0].availableTo.toUser === user[0].username ||
                         (results[0].availableTo.toGroup === null && results[0].availableTo.toUser === null)) {
-                        res.cookie('qrData', results[0].dataIds, { maxAge: 900000, httpOnly: true });
-                        res.redirect('/share_page');
+                        res.cookie('qrData', results[0].data, { maxAge: 900000, httpOnly: true });
+                        res.redirect('/shareS');
                     } else {
                         res.redirect('/accessAlert');
                     }
@@ -296,8 +311,8 @@ app.get('/share/:id', function (req, res) {
                 }
             });
         } else {
-            res.cookie('qrData', results[0].dataIds, { maxAge: 900000, httpOnly: true });
-            res.redirect('/share_page');
+            res.cookie('qrData', results[0].data[0], { maxAge: 900000, httpOnly: true });
+            res.redirect('/shareS');
         }
 
         if (results[0]._doc.toUserType === "all") {
@@ -340,7 +355,7 @@ app.get('/makeshare', function (req, res) {
                     toGroup: queryData.toGroup,
                     toUser: queryData.toUser
                 },
-                dataIds: queryData.id
+                data: queryData.id
             };
             ShareData.create(shareDataT, function (err, shareData) {
                 if (err) {
