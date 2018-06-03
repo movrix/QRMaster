@@ -33,14 +33,14 @@ var port = process.env.PORT || 8080;        // set our port
 var dbUrl = 'mongodb://localhost/results';
 
 if (process.env.OPENSHIFT_MONGODB_DB_URL) {
-    dbUrl = process.env.OPENSHIFT_MONGODB_DB_URL +
-        process.env.OPENSHIFT_APP_NAME;
+    dbUrl = process.env.OPENSHIFT_MONGODB_DB_URL
 }
 
 // Коннект к базе
 mongoose.connect(dbUrl, function (err) {
     if (err) {
-        console.err(err);
+        console.log(dbUrl);
+        console.log(err);
     } else {
         console.log('Connected');
     }
