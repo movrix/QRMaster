@@ -32,7 +32,7 @@ var port = process.env.PORT || 8080;        // set our port
 
 
 // Коннект к базе
-mongoose.connect('mongodb://localhost/results', function (err) {
+mongoose.connect('mongodb:UspqXJeIttSjHMAd//user4F2:@localhost/results', function (err) {
     if (err) {
         console.err(err);
     } else {
