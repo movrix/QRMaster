@@ -30,9 +30,15 @@ app.use(session({
 
 var port = process.env.PORT || 8080;        // set our port
 
+var dbUrl = 'mongodb://localhost/results';
+
+if (process.env.OPENSHIFT_MONGODB_DB_URL) {
+    dbUrl = process.env.OPENSHIFT_MONGODB_DB_URL +
+        process.env.OPENSHIFT_APP_NAME;
+}
 
 // Коннект к базе
-mongoose.connect('mongodb://user4F2:UspqXJeIttSjHMAd@localhost/results', function (err) {
+mongoose.connect(dbUrl, function (err) {
     if (err) {
         console.err(err);
     } else {
