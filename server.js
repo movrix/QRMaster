@@ -31,11 +31,8 @@ app.use(session({
 
 var port = process.env.PORT || 8080;        // set our port
 
-var dbUrl = 'mongodb://localhost/results';
+var dbUrl = process.env.OPENSHIFT_MONGODB_DB_URL + process.env.OPENSHIFT_APP_NAME;
 
-if (process.env.OPENSHIFT_MONGODB_DB_URL) {
-    dbUrl = process.env.OPENSHIFT_MONGODB_DB_URL
-}
 
 // Коннект к базе
 mongoose.connect(dbUrl, function (err) {
@@ -104,7 +101,13 @@ app.get('/registration', function (req, res) {
 });
 
 app.get('/course', function (req, res) {
-    res.sendFile(path.join(__dirname + '/src/course.html'));
+    User.find({'_id': req.session.userId, 'teacher': true}, function (err, results) {
+        if (results.length === 0) {
+            res.redirect('/accessAlert');
+        } else {
+            res.sendFile(path.join(__dirname + '/src/course.html'));
+        }
+    });
 });
 
 app.get('/share_page_t', function (req, res) {

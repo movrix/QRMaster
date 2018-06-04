@@ -53,19 +53,20 @@ $(document).ready(function () {
                           '</div>' +
                           '<div id="collapseOne' + i + '"' + 'class="collapse" aria-labelledby="headingOne" data-parent="#accordion">' +
                                 '<div class="card-body">';
+                HTML += '<p>' + data[i].description + '</p>';
 
                 HTML += '<table class="table">' +
                     '<thead>' +
                         '<tr>' +
                             '<th scope="col">Тема</th>' +
-                            '<th scope="col">Ссылка</th>' +
+                            //'<th scope="col">Ссылка</th>' +
                             '<th scope="col"></th>' +
                         '</tr>' +
                     '</thead><tbody>';
                 for (var j = 0; j < data[i].themes.length; j++) {
                     HTML += '<tr>' +
                                 '<td>' + data[i].themes[j].title + '</td>' +
-                                '<td>' + data[i].themes[j].link + '</td>' +
+                            //    '<td>' + data[i].themes[j].link + '</td>' +
                                 '<td>' +
                                     '<div class="form-check">\n' +
                                         '<input class="form-check-input" type="radio" name="exampleRadios" id="exampleRa" value="' + data[i].themes[j].link + '">\n' +
