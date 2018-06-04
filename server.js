@@ -31,7 +31,7 @@ app.use(session({
 
 var port = process.env.PORT || 8080;        // set our port
 
-var dbUrl = process.env.OPENSHIFT_MONGODB_DB_URL + process.env.OPENSHIFT_APP_NAME;
+var dbUrl = "mongodb://user4F2:UspqXJeIttSjHMAd@172.30.217.56:27017/resultss"
 
 
 // Коннект к базе
