@@ -31,7 +31,7 @@ app.use(session({
 
 var port = process.env.PORT || 8080;        // set our port
 
-var dbUrl = "mongodb://user4F2:UspqXJeIttSjHMAd@172.30.217.56:27017/resultss"
+var dbUrl = "mongodb://admin:CrMds4DIaqeeAfID@172.30.106.141:27017/results";
 
 
 // Коннект к базе
